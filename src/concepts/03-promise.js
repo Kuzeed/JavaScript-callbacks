@@ -24,20 +24,41 @@ export const promisesComponent = ( element ) => {
         <h3> ${ error } </h3>
         `
     }
+    const id1 = '5d86371f233c9f2425f16916',
+          id2 = '5d86371fd55e2e2a30fe1ccb1';
 
-    const id1 = '5d86371f233c9f2425f16916';
-    const id2 = '5d86371fd55e2e2a30fe1ccb1';
-    findHero( id1 )
-        .then( (hero1) => {
-            findHero( id2)
-            .then( hero2 => {
-                renderTwoHeros(hero1, hero2)
-            
-            })
-            .catch( renderError);
-        } )
+    //! Forma3 (recomendada): ambas promesas en paralelo
+    Promise.all([
+        findHero(id1),
+        findHero(id2),
+    ])
+        .then( ([hero1, hero2]) => renderTwoHeros(hero1, hero2) )
         .catch( renderError );
+
+    //! Forma2: promesas encadenadas
+    // let hero1;
+    // findHero(id1)
+    //     .then( hero => {
+    //         hero1 = hero;
+    //         return findHero(id2);
+    //     })
+    //     .then( hero2 => {
+    //         renderTwoHeros( hero1, hero2 );
+    //     })
+    //     .catch( renderError );
+
+    //! Forma1: Promise Hell
+    // findHero( id1 )
+    //     .then( (hero1) => {
+    //         findHero( id2 )
+    //             .then( hero2 => {
+    //                 renderTwoHeros(hero1, hero2)
+    //             })
+    //             .catch( renderError );
+    //     })
+    //     .catch( renderError );
 }
+
 
 /**
  * 
